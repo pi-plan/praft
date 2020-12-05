@@ -32,7 +32,7 @@ python3 demos/demo.py --debug
 默认启动 `9023` 端口监听客户端请求集群请求。
 
 ```
-❯ curl -X PUT <http://127.0.0.1:9023/test/key> -d "{\\\\"value\\\\":1}"
+❯ curl -X PUT http://127.0.0.1:9023/test/key -d "{\"value\":1}"
 {"value": 1}
 
 ```
@@ -40,7 +40,7 @@ python3 demos/demo.py --debug
 设置和更新值，Path `/test/key` 就是 Key，Body 必须是 JSON 格式。
 
 ```
-❯ curl <http://127.0.0.1:9023/test/key>
+❯ curl http://127.0.0.1:9023/test/key
 {"value": 1}
 
 ```
@@ -48,7 +48,7 @@ python3 demos/demo.py --debug
 获取 Key。
 
 ```
-❯ curl -X DELETE <http://127.0.0.1:9023/test/key>
+❯ curl -X DELETE http://127.0.0.1:9023/test/key
 
 ```
 
@@ -68,12 +68,12 @@ python3 demos/demo.py --listen-url 127.0.0.1:9025  --initial-advertise-peers 127
 假如此时的 Leader 节点是 `127.0.0.1:9024`实例，客户端随机向集群中的一个节点发起请求。
 
 ```
-❯ curl -i <http://127.0.0.1:9023/test/key>
+❯ curl -i http://127.0.0.1:9023/test/key
 HTTP/1.1 302 Found
 Server: TornadoServer/6.0.4
 Content-Type: text/html; charset=UTF-8
 Date: Sat, 05 Dec 2020 14:24:26 GMT
-Location: <http://127.0.0.1:9024/test/key>
+Location: http://127.0.0.1:9024/test/key
 Content-Length: 0
 
 ```
@@ -84,7 +84,7 @@ Content-Length: 0
 比如：
 
 ```
-❯ curl -X PUT <http://127.0.0.1:9024/_praft/leadership_transfer>
+❯ curl -X PUT http://127.0.0.1:9024/_praft/leadership_transfer
 {"transferring":true}
 
 ```
@@ -92,7 +92,7 @@ Content-Length: 0
 Leader 节点转移。当前 Leader 会从集群的剩余节点里选择一个日志完备的节点作为转移对象。
 
 ```
-❯ curl -X PUT <http://127.0.0.1:9024/_praft/remove_node hostname=127.0.0.1&port=9023>
+❯ curl -X PUT http://127.0.0.1:9024/_praft/remove_node hostname=127.0.0.1&port=9023
 
 ```
 
@@ -111,16 +111,16 @@ demo 里是基于 HTTP 协议进行交互的 Key/Value 系统。可以基于 PRa
 
 ### 网络协议
 
-实现 [praft.peer.Peer](https://github.com/laomafeima/praft/blob/master/praft/peer.py#L7) 接口即可。详细参考：[HTTPJsonPeer](https://github.com/laomafeima/praft/blob/master/demos/demo.py#L225)
+实现 [praft.peer.Peer](https://github.com/pi-projects/praft/blob/master/praft/peer.py#L7) 接口即可。详细参考：[HTTPJsonPeer](https://github.com/pi-projects/praft/blob/master/demos/demo.py#L225)
 
 ### 日志存储
 
-实现 [praft.log_storage.SnapshotData](https://github.com/laomafeima/praft/blob/master/praft/log_storage.py#L15) 接口即可。详细参考：[ListLogStorage](https://github.com/laomafeima/praft/blob/master/demos/demo.py#L270)
+实现 [praft.log_storage.SnapshotData](https://github.com/pi-projects/praft/blob/master/praft/log_storage.py#L15) 接口即可。详细参考：[ListLogStorage](https://github.com/pi-projects/praft/blob/master/demos/demo.py#L270)
 
 ### 状态机
 
-实现 [praft.state_machine.StateMachine](https://github.com/laomafeima/praft/blob/master/praft/state_machine.py#L7) 接口即可。详细参考：[DictStateMachine](https://github.com/laomafeima/praft/blob/master/demos/demo.py#L339)
+实现 [praft.state_machine.StateMachine](https://github.com/pi-projects/praft/blob/master/praft/state_machine.py#L7) 接口即可。详细参考：[DictStateMachine](https://github.com/pi-projects/praft/blob/master/demos/demo.py#L339)
 
 ## 参与
 
-报告 bug，请提交一个 [Issue](https://github.com/laomafeima/praft/issues)。参与贡献改进及新功能, 请提交 [Pull request](https://github.com/laomafeima/praft/pulls) 并创建一个 Issue 以便讨论与进度追踪。
+报告 bug，请提交一个 [Issue](https://github.com/pi-projects/praft/issues)。参与贡献改进及新功能, 请提交 [Pull request](https://github.com/pi-projects/praft/pulls) 并创建一个 Issue 以便讨论与进度追踪。
